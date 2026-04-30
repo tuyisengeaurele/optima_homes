@@ -1,9 +1,11 @@
 import pool from '../config/db.js'
+import Analytics from '../models/Analytics.js'
+import { checkDbHealth, getDbStats } from '../config/dbHealth.js'
 
 export const getDashboardStats = async (req, res, next) => {
   try {
     const [[propStats]] = await pool.query(
-      `SELECT COUNT(*) as total, SUM(status='active') as active,
+      `SELECT COUNT(*) as total, SUM(status='available') as active,
         SUM(status='sold') as sold, SUM(status='rented') as rented,
         SUM(views) as total_views
        FROM properties`
@@ -26,7 +28,7 @@ export const getDashboardStats = async (req, res, next) => {
     )
 
     const [recentProperties] = await pool.query(
-      `SELECT p.id, p.title, p.price, p.type, p.status, p.city, p.created_at,
+      `SELECT p.id, p.title, p.price, p.property_type, p.status, p.city, p.created_at,
         (SELECT image_url FROM property_images WHERE property_id = p.id AND is_primary = 1 LIMIT 1) as primary_image
        FROM properties p ORDER BY p.created_at DESC LIMIT 5`
     )
@@ -55,14 +57,56 @@ export const getDashboardStats = async (req, res, next) => {
 
 export const trackEvent = async (req, res, next) => {
   try {
-    const { event_type, entity_id, metadata } = req.body
+    const { property_id, event_type, metadata } = req.body
     const ip = req.ip || req.headers['x-forwarded-for']
-    await pool.query(
-      'INSERT INTO analytics (event_type, entity_id, user_id, ip_address, metadata) VALUES (?, ?, ?, ?, ?)',
-      [event_type, entity_id || null, req.user?.id || null, ip, metadata ? JSON.stringify(metadata) : null]
-    )
+    await Analytics.track({
+      property_id: property_id || null,
+      event_type,
+      user_id: req.user?.id || null,
+      ip_address: ip,
+      user_agent: req.headers['user-agent'],
+      metadata,
+    })
     res.json({ success: true })
   } catch (err) {
     next(err)
   }
+}
+
+export const getOverview = async (req, res, next) => {
+  try {
+    const data = await Analytics.getOverview()
+    res.json({ success: true, data })
+  } catch (err) { next(err) }
+}
+
+export const getTopProperties = async (req, res, next) => {
+  try {
+    const limit = Math.min(parseInt(req.query.limit) || 10, 50)
+    const data = await Analytics.getTopProperties(limit)
+    res.json({ success: true, data })
+  } catch (err) { next(err) }
+}
+
+export const getDailyViews = async (req, res, next) => {
+  try {
+    const days = Math.min(parseInt(req.query.days) || 30, 365)
+    const data = await Analytics.getDailyViews(days)
+    res.json({ success: true, data })
+  } catch (err) { next(err) }
+}
+
+export const getCityDistribution = async (req, res, next) => {
+  try {
+    const data = await Analytics.getCityDistribution()
+    res.json({ success: true, data })
+  } catch (err) { next(err) }
+}
+
+export const getSystemHealth = async (req, res, next) => {
+  try {
+    const db = await checkDbHealth()
+    const tables = await getDbStats()
+    res.json({ success: true, data: { db, tables, uptime: process.uptime() } })
+  } catch (err) { next(err) }
 }
