@@ -2,6 +2,7 @@ import { Outlet, useLocation } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
 import Navbar from './Navbar'
 import Footer from './Footer'
+import ScrollToTop from '../common/ScrollToTop'
 
 const pageVariants = {
   initial: { opacity: 0, y: 15 },
@@ -28,6 +29,7 @@ export default function MainLayout() {
         </motion.main>
       </AnimatePresence>
       <Footer />
+      <ScrollToTop />
     </div>
   )
 }
