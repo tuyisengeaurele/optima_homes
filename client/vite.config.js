@@ -28,19 +28,7 @@ export default defineConfig({
   },
   build: {
     target: 'esnext',
-    minify: 'esbuild',
-    rollupOptions: {
-      output: {
-        manualChunks: {
-          react: ['react', 'react-dom'],
-          router: ['react-router-dom'],
-          motion: ['framer-motion'],
-          icons: ['react-icons'],
-          store: ['zustand'],
-          forms: ['react-hook-form'],
-        },
-      },
-    },
+    minify: true,
     chunkSizeWarningLimit: 1000,
   },
 })
