@@ -9,7 +9,15 @@
     "build": "cd client && npm run build",
     "start": "cd server && npm start"
   },
-  "keywords": ["real-estate", "react", "nodejs", "mysql"],
+  "keywords": [
+    "real-estate",
+    "react",
+    "nodejs",
+    "mysql"
+  ],
   "author": "Ange Aurele TUYISENGE",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "concurrently": "^9.2.1"
+  }
 }
