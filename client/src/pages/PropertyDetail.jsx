@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
+import { FaBed, FaBath, FaHeart } from 'react-icons/fa'
 import {
-  FiBed, FiBath, FiMaximize, FiMapPin, FiCalendar, FiHeart,
+  FiMaximize, FiMapPin, FiCalendar,
   FiShare2, FiPhone, FiMail, FiCheck, FiEye, FiArrowLeft,
 } from 'react-icons/fi'
 import { usePropertyStore } from '../store/propertyStore'
@@ -123,7 +124,7 @@ export default function PropertyDetail() {
                 <div className="absolute top-4 right-4 flex gap-2">
                   <motion.button onClick={toggleFav} whileTap={{ scale: 0.85 }}
                     className={`w-10 h-10 rounded-full flex items-center justify-center backdrop-blur-sm ${favorited ? 'bg-red-500 text-white' : 'bg-black/30 text-white'}`}>
-                    <FiHeart size={18} fill={favorited ? 'currentColor' : 'none'} />
+                    <FaHeart size={16} />
                   </motion.button>
                   <motion.button onClick={share} whileTap={{ scale: 0.85 }}
                     className="w-10 h-10 rounded-full bg-black/30 backdrop-blur-sm text-white flex items-center justify-center">
@@ -169,14 +170,14 @@ export default function PropertyDetail() {
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 py-5 border-y border-gray-100 dark:border-navy-800 mb-5">
                 {property.bedrooms > 0 && (
                   <div className="text-center">
-                    <FiBed size={20} className="text-royal-500 mx-auto mb-1" />
+                    <FaBed size={18} className="text-royal-500 mx-auto mb-1" />
                     <div className="text-sm font-semibold text-navy-900 dark:text-white">{property.bedrooms}</div>
                     <div className="text-xs text-gray-400">Bedrooms</div>
                   </div>
                 )}
                 {property.bathrooms > 0 && (
                   <div className="text-center">
-                    <FiBath size={20} className="text-royal-500 mx-auto mb-1" />
+                    <FaBath size={18} className="text-royal-500 mx-auto mb-1" />
                     <div className="text-sm font-semibold text-navy-900 dark:text-white">{property.bathrooms}</div>
                     <div className="text-xs text-gray-400">Bathrooms</div>
                   </div>

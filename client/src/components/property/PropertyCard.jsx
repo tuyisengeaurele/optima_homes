@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { FiBed, FiBath, FiMaximize, FiHeart, FiMapPin, FiEye } from 'react-icons/fi'
+import { FaHeart, FaBed, FaBath } from 'react-icons/fa'
+import { FiMaximize, FiMapPin, FiEye } from 'react-icons/fi'
 import { useState } from 'react'
 import { useAuthStore } from '../../store/authStore'
 import { useUIStore } from '../../store/uiStore'
@@ -100,7 +101,7 @@ export default function PropertyCard({ property, index = 0 }) {
                 favorited ? 'bg-red-500 text-white' : 'bg-white/20 text-white hover:bg-white/40'
               }`}
             >
-              <FiHeart size={16} fill={favorited ? 'currentColor' : 'none'} />
+              <FaHeart size={16} style={{ opacity: favorited ? 1 : 0.7 }} />
             </motion.button>
 
             {/* Views */}
@@ -137,13 +138,13 @@ export default function PropertyCard({ property, index = 0 }) {
             <div className="flex items-center gap-4 pt-3 border-t border-gray-100 dark:border-navy-800">
               {property.bedrooms > 0 && (
                 <div className="flex items-center gap-1.5 text-gray-500 dark:text-gray-400 text-sm">
-                  <FiBed size={15} className="text-royal-500" />
+                  <FaBed size={14} className="text-royal-500" />
                   <span>{property.bedrooms} Bed</span>
                 </div>
               )}
               {property.bathrooms > 0 && (
                 <div className="flex items-center gap-1.5 text-gray-500 dark:text-gray-400 text-sm">
-                  <FiBath size={15} className="text-royal-500" />
+                  <FaBath size={14} className="text-royal-500" />
                   <span>{property.bathrooms} Bath</span>
                 </div>
               )}
